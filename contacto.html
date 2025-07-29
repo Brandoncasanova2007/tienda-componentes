@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contacto - Fusion Tech</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .contacto-container {
       display: flex;
@@ -60,19 +61,35 @@
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">
-    <img src="https://img.icons8.com/ios-filled/50/computer.png" alt="logo" />
-    <h1>Fusion Tech</h1>
+<!-- BANNER CORREGIDO -->
+<header class="banner">
+  <div class="banner-top">
+    <div class="logo"><h1>Fusion Tech</h1></div>
+    <div class="buscador">
+      <input type="text" id="input-buscador" placeholder="Buscar producto...">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="redes">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+      <a href="#"><i class="fab fa-tiktok"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <div class="usuario-opciones">
+        <a href="#"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#"><i class="fas fa-user"></i></a>
+      </div>
+    </div>
   </div>
+
   <nav class="menu">
     <ul>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="monitores.html">Monitores</a></li>
-      <li><a href="teclados.html">Teclados</a></li>
-      <li><a href="gaming.html">Gaming</a></li>
-      <li><a href="componentes.html">Componentes</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="monitores.html">Monitores</a></li>
+        <li><a href="teclados.html">Teclados</a></li>
+        <li><a href="gaming.html">Gaming</a></li>
+        <li><a href="componentes.html">Componentes</a></li>
+        <li><a href="ordernador.html">Ordenador</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
     </ul>
   </nav>
 </header>
@@ -83,16 +100,14 @@
 
     <div class="contacto-container">
 
-      <!-- Información de contacto -->
       <div class="info-contacto">
         <h3>Información del contacto</h3>
-        <p><strong>Dirección:</strong> Calle Tecnología #123, Ciudad Digital</p>
-        <p><strong>Teléfono:</strong> +591 71234567</p>
+        <p><strong>Dirección:</strong> Calle Armando Mendez #1375, Ciudad Cochabamba</p>
+        <p><strong>Teléfono:</strong> +591 65772848</p>
         <p><strong>Email:</strong> contacto@fusiontech.com</p>
         <p><strong>Horario de atención:</strong><br>Lunes a Viernes: 9:00 - 18:00<br>Sábados: 9:00 - 13:00</p>
       </div>
 
-      <!-- Formulario -->
       <div class="formulario-contacto">
         <form action="#" method="POST">
           <input type="text" name="nombre" placeholder="Nombre completo" required>
