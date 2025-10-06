@@ -6,20 +6,22 @@
   <title>Fusion Tech - Componentes de Computadora</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Swiper CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
 
-
   <header class="banner">
     <div class="banner-top">
-      <div class="logo"><h1>Fusion Tech</h1>
-      <img src="fotos/Screenshot_33-removebg-preview.png" alt=""></div>
+      <div class="logo">
+        <h1>Fusion Tech</h1>
+        <img src="fotos/Screenshot_33-removebg-preview.png" alt="">
+      </div>
+
       <div class="buscador">
         <input type="text" id="input-buscador" placeholder="Buscar producto...">
         <i class="fas fa-search"></i>
       </div>
+
       <div class="redes">
         <a href="https://www.facebook.com/profile.php?id=61578791375270" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="#"><i class="fab fa-youtube"></i></a>
@@ -27,12 +29,13 @@
         <a href="#"><i class="fab fa-instagram"></i></a>
         <div class="usuario-opciones">
           <a href="#"><i class="fas fa-shopping-cart"></i></a>
-          <a href="#"><i class="fas fa-user"></i></a>
+          <!-- Este botón abre el modal -->
+          <a href="#" id="loginLink"><i class="fas fa-user"></i> Iniciar sesión</a>
+          <span id="saldoUsuario" style="color:#00ffcc; margin-left:10px;"></span>
         </div>
       </div>
     </div>
 
- 
     <nav class="menu">
       <ul>
         <li><a href="index.html">Inicio</a></li>
@@ -46,7 +49,7 @@
     </nav>
   </header>
 
-
+  <!-- Banner -->
   <div class="swiper mySwiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="fotos/representacion-3d-de-fondo-de-textura-hexagonal.jpg" alt="Banner 1"></div>
@@ -82,28 +85,158 @@
     </section>
   </main>
 
-  <footer><p>© 2025 Tienda de Componentes. Todos los derechos reservados.</p></footer>
+  <footer>
+    <p>© 2025 Tienda de Componentes. Todos los derechos reservados.</p>
+  </footer>
 
-  <!-- Swiper JS -->
+  <!-- MODAL LOGIN -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="cerrar">&times;</span>
+      <h2>Iniciar Sesión</h2>
+      <form id="loginForm">
+        <label>Usuario:</label>
+        <input type="text" id="usuario" required>
+        <label>Contraseña:</label>
+        <input type="password" id="password" required>
+        <button type="submit">Ingresar</button>
+      </form>
+      <p id="mensaje"></p>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper(".mySwiper", {
-      loop: true,
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      pagination: { el: ".swiper-pagination", clickable: true },
-      navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+   <script>
+    // Cuentas predefinidas
+    const cuentas = [
+      { usuario: "admin", password: "1234", nombre: "Administrador", saldo: 1000 },
+      { usuario: "brandon", password: "fusion", nombre: "Brandon", saldo: 250 },
+      { usuario: "cliente1", password: "compras", nombre: "Cliente Regular", saldo: 80 }
+    ];
+
+    const loginLink = document.getElementById("loginLink");
+    const logoutLink = document.getElementById("logoutLink");
+    const modal = document.getElementById("loginModal");
+    const cerrarBtn = document.querySelector(".cerrar");
+    const form = document.getElementById("loginForm");
+    const mensaje = document.getElementById("mensaje");
+    const usuarioActivo = document.getElementById("usuarioActivo");
+
+    // Mostrar modal
+    loginLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.style.display = "block";
     });
 
-    const buscador = document.getElementById("input-buscador");
-    const productos = document.querySelectorAll(".producto");
-    buscador.addEventListener("input", () => {
-      const texto = buscador.value.toLowerCase();
-      productos.forEach(p => {
-        const nombre = p.querySelector("h3").textContent.toLowerCase();
-        p.style.display = nombre.includes(texto) ? "block" : "none";
-      });
+    // Cerrar modal
+    cerrarBtn.addEventListener("click", () => {
+      modal.style.display = "none";
     });
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+
+    // Iniciar sesión
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = document.getElementById("usuario").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      const cuenta = cuentas.find(c => c.usuario === user && c.password === pass);
+
+      if (cuenta) {
+        mensaje.style.color = "#00ffc3";
+        mensaje.textContent = "Bienvenido " + cuenta.nombre + " ✅";
+        localStorage.setItem("usuarioActivo", JSON.stringify(cuenta));
+        setTimeout(() => {
+          modal.style.display = "none";
+          mostrarUsuario();
+        }, 800);
+      } else {
+        mensaje.style.color = "red";
+        mensaje.textContent = "Usuario o contraseña incorrectos ❌";
+      }
+    });
+
+    // Mostrar usuario activo
+    function mostrarUsuario() {
+      const cuenta = JSON.parse(localStorage.getItem("usuarioActivo"));
+      if (cuenta) {
+        usuarioActivo.textContent = `${cuenta.nombre} | Saldo: $${cuenta.saldo}`;
+        loginLink.style.display = "none";
+        logoutLink.style.display = "inline";
+      }
+    }
+
+    // Cerrar sesión
+    logoutLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("usuarioActivo");
+      usuarioActivo.textContent = "";
+      loginLink.style.display = "inline";
+      logoutLink.style.display = "none";
+    });
+
+    // Mantener sesión si estaba iniciada
+    window.onload = mostrarUsuario;
   </script>
 
+  <style>
+    /* --- Modal Estilo --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-content {
+      background-color: #111;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      color: #fff;
+      box-shadow: 0 0 20px #00ffc3;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 90%;
+      padding: 8px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: white;
+    }
+
+    .modal-content button {
+      background: #00ffc3;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .modal-content button:hover {
+      background: #00b58a;
+    }
+
+    .cerrar {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .cerrar:hover {
+      color: white;
+    }
+  </style>
 </body>
 </html>
